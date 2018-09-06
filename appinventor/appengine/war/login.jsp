@@ -10,7 +10,7 @@
    String repo = (String) request.getAttribute("repo");
    String galleryId = (String) request.getAttribute("galleryId");
    if (locale == null) {
-       locale = "en";
+       locale = "pt_BR";
    }
 
 %>
@@ -61,7 +61,7 @@ out.println("<center><font color=red><b>" + error + "</b></font></center><br/>")
                               .add("locale", locale)
                               .add("repo", repo)
                               .add("galleryId", galleryId)
-                              .add("redirect", redirect).build() %>" style="text-decoration:none;">Click Here to use your Google Account to login</a></p></center>
+                              .add("redirect", redirect).build() %>" style="text-decoration:none;">Click Here to signin without password</a></p></center>
 <%    } %>
 <footer>
 <center><a href="<%= new UriBuilder("/login")
@@ -70,7 +70,7 @@ out.println("<center><font color=red><b>" + error + "</b></font></center><br/>")
                            .add("galleryId", galleryId)
                            .add("redirect", redirect).build() %>"  style="text-decoration:none;" >中文</a>&nbsp;
 <a href="<%= new UriBuilder("/login")
-                           .add("locale", "pt")
+                           .add("locale", "pt_BR")
                            .add("repo", repo)
                            .add("galleryId", galleryId)
                            .add("redirect", redirect).build() %>"  style="text-decoration:none;" >Português</a>&nbsp;
