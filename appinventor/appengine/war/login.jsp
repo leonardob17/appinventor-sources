@@ -61,7 +61,7 @@ out.println("<center><font color=red><b>" + error + "</b></font></center><br/>")
                               .add("locale", locale)
                               .add("repo", repo)
                               .add("galleryId", galleryId)
-                              .add("redirect", redirect).build() %>" style="text-decoration:none;">Click Here to signin without password </a></p></center>
+                              .add("redirect", redirect).build() %>" style="text-decoration:none;">Click Here to signin without password</a></p></center>
 <%    } %>
 <footer>
 <center><a href="<%= new UriBuilder("/login")
