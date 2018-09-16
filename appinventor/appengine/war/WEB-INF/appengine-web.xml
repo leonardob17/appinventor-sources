@@ -98,15 +98,16 @@
          to the site will receive an error page.
      -->
 
-    <property name="auth.usegoogle" value="true" />
+    <property name="auth.usegoogle" value="false" />
     <property name="auth.uselocal" value="true" />
 
     <!-- Flags associated with localauth code -->
     <property name="localauth.mailserver" value="https://osiris.mit.edu/passmail/" />
+    <!-- <property name="localauth.mailserver" value="http://byod-srv01.nuvem.ufrgs.br:8080/sendMail.php" /> -->
     <property name="localauth.mailserver.password" value="changeme" />
 
     <!-- host[:port] to use for connecting to the build server -->
-    <property name="build.server.host" value="localhost:9990" />
+    <property name="build.server.host" value="localhost:8080" />
 
     <!-- We provide below for a second buildserver. If this field is
          non-empty then the user is presented a choice of two different
@@ -186,6 +187,10 @@
     <property name="clouddb.server" value="clouddb.example.com"/>
     <property name="clouddb.uuid.secret" value="changeme!"/>
     <property name="clouddb.secret" value="changeme too!" />
+
+    <!-- Chave Send Grid -->
+    <property name="sendgrid.key" value=""/>
+    <property name="sendgrid.script_path" value=""/>
 
   </system-properties>
 

@@ -9,6 +9,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.appinventor.server.flags.Flag;
+import com.google.appinventor.server.EmailHelper;
 
 import com.google.appinventor.server.storage.StorageIo;
 import com.google.appinventor.server.storage.StorageIoInstanceHolder;
@@ -67,13 +68,15 @@ public class LoginServlet extends HttpServlet {
 
   private final StorageIo storageIo = StorageIoInstanceHolder.INSTANCE;
   private static final Logger LOG = Logger.getLogger(LoginServlet.class.getName());
+  private static final Flag<String> sendGridKey = Flag.createFlag("sendgrid.key", "");
+  private static final Flag<String> sendGridScript = Flag.createFlag("sendgrid.script_path", "");
   private static final Flag<String> mailServer = Flag.createFlag("localauth.mailserver", "");
   private static final Flag<String> password = Flag.createFlag("localauth.mailserver.password", "");
-  private static final Flag<Boolean> useGoogle = Flag.createFlag("auth.usegoogle", true);
-  private static final Flag<Boolean> useLocal = Flag.createFlag("auth.uselocal", false);
+  private static final Flag<Boolean> useGoogle = Flag.createFlag("auth.usegoogle", false);
+  private static final Flag<Boolean> useLocal = Flag.createFlag("auth.uselocal", true);
   private static final UserService userService = UserServiceFactory.getUserService();
   private final PolicyFactory sanitizer = new HtmlPolicyBuilder().allowElements("p").toFactory();
-  private static final boolean DEBUG = Flag.createFlag("appinventor.debugging", false).get();
+  private static final boolean DEBUG = Flag.createFlag("appinventor.debugging", true).get();
 
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
@@ -97,7 +100,7 @@ public class LoginServlet extends HttpServlet {
     // were not logged in.
     String locale = params.get("locale");
     if (locale == null) {
-      locale = "en";
+      locale = "pt_BR";
     }
     String repo = params.get("repo");
     String galleryId = params.get("galleryId");
@@ -189,39 +192,35 @@ public class LoginServlet extends HttpServlet {
       if (DEBUG) {
         LOG.info("setpw email = " + data.email);
       }
+
       User user = storageIo.getUserFromEmail(data.email);
       userInfo = new OdeAuthFilter.UserInfo(); // Create new userInfo object
       userInfo.setUserId(user.getUserId()); // This effectively logs us in!
       out = setCookieOutput(userInfo, resp);
-//      req.getSession().setAttribute("userid", user.getUserId()); // This effectively logs us in!
-      out.println("<html><head><title>Set Your Password</title>\n");
-      out.println("</head>\n<body>\n");
-      out.println("<h1>" + bundle.getString("setyourpassword") + "</h1>\n");
-      out.println("<form method=POST action=\"" + req.getRequestURI() + "\">");
-      out.println("<input type=password name=password value=\"\" size=\"35\"><br />\n");
-      out.println("<p></p>");
-      out.println("<input type=Submit value=\"" + bundle.getString("setpassword") + "\" style=\"font-size: 300%;\">\n");
-      out.println("</form>\n");
-      storageIo.cleanuppwdata();
+
+      try {
+        req.getRequestDispatcher("/setpw.jsp").forward(req, resp);
+        storageIo.cleanuppwdata();
+      } catch (ServletException e) {
+        throw new IOException(e);
+      }
       return;
     } else if (page.equals("linksent")) {
       out = setCookieOutput(userInfo, resp);
-      out.println("<html><head><title>" + bundle.getString("linksent") + "</title></head>\n");
-      out.println("<body>\n");
-      out.println("<h1>" + bundle.getString("linksent") + "</h1>\n");
-      out.println("<p>" + bundle.getString("checkemail") + "</p>\n");
+      try {
+        req.getRequestDispatcher("/linksent.jsp").forward(req, resp);
+      } catch (ServletException e) {
+        throw new IOException(e);
+      }
       return;
     } else if (page.equals("sendlink")) {
       out = setCookieOutput(userInfo, resp);
-      out.println("<head><title>" + bundle.getString("requestreset") + "</title></head>\n");
-      out.println("<body>\n");
-      out.println("<h1>" + bundle.getString("requestlink") + "</h1>\n");
-      out.println("<p>" + bundle.getString("requestinstructions") + "</p>\n");
-      out.println("<form method=POST action=\"" + req.getRequestURI() + "\">\n");
-      out.println(bundle.getString("enteremailaddress") + ":&nbsp;<input type=text name=email value=\"\" size=\"35\"><br />\n");
-      out.println("<p></p>");
-      out.println("<input type=submit value=\"" + bundle.getString("sendlink") + "\" style=\"font-size: 300%;\">\n");
-      out.println("</form>\n");
+      req.setAttribute("action", req.getRequestURI());
+      try {
+        req.getRequestDispatcher("/sendlink.jsp").forward(req, resp);
+      } catch (ServletException e) {
+        throw new IOException(e);
+      }
       return;
     }
 
@@ -279,7 +278,7 @@ public class LoginServlet extends HttpServlet {
     String redirect = params.get("redirect");
 
     if (locale == null) {
-      locale = "en";
+      locale = "pt_BR";
     }
 
     ResourceBundle bundle = ResourceBundle.getBundle("com/google/appinventor/server/loginmessages", new Locale(locale));
@@ -300,7 +299,8 @@ public class LoginServlet extends HttpServlet {
         return;
       }
       String link = trimPage(req) + pwData.id + "/setpw";
-      sendmail(email, link, locale);
+      // sendmail(email, link, locale);
+      sendGridMail(email, link);
       resp.sendRedirect("/login/linksent/");
       storageIo.cleanuppwdata();
       return;
@@ -342,7 +342,7 @@ public class LoginServlet extends HttpServlet {
 
     String hash = user.getPassword();
     if ((hash == null) || hash.equals("")) {
-      fail(req, resp, "No Password Set for User");
+      fail(req, resp, "Senha ainda não definida para este usuário");
       return;
     }
 
@@ -353,7 +353,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     if (!validLogin) {
-      fail(req, resp, bundle.getString("invalidpassword"));
+      fail(req, resp, "Senha ou Email Incorretos");
       return;
     }
 
@@ -426,9 +426,21 @@ public class LoginServlet extends HttpServlet {
     return sb.toString();
   }
 
-  private void fail(HttpServletRequest req, HttpServletResponse resp, String error) throws IOException {
+  private void fail(HttpServletRequest req, HttpServletResponse resp, String error) throws IOException {    
     resp.sendRedirect("/login/?error=" + sanitizer.sanitize(error));
     return;
+  }
+
+  private void sendGridMail(String email, String link) {
+    String to = email;
+    String subject = "Link para Criacao/Alteracao de Senha";
+    String message = "Acesse o seguinte link para cadastrar/alterar sua senha: " + link;
+    try {
+      EmailHelper sender = new EmailHelper();
+      sender.sendEmail(to, subject, message);
+    } catch (Exception e) {
+      LOG.info(e.getMessage());
+    }
   }
 
   private void sendmail(String email, String url, String locale) {

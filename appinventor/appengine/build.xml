@@ -186,6 +186,19 @@
     <copy todir="${build.war.dir}/WEB-INF/lib" flatten="true">
       <fileset dir="${appengine.sdk}/lib/user" includes="**/*.jar"/>
     </copy>
+    <!-- Sendgrid jar -->
+    <!-- <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/send-grid/sendgrid-java.jar" /> -->
+    <!-- Http Apache jars -->
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/commons-codec-1.10.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/commons-logging-1.2.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/fluent-hc-4.5.6.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/httpclient-4.5.6.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/httpclient-cache-4.5.6.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/httpclient-win-4.5.6.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/httpcore-4.4.10.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/httpmime-4.5.6.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/jna-4.4.0.jar" />
+    <copy todir="${build.war.dir}/WEB-INF/lib" file="${lib.dir}/httpcomponents-client-4.5.6/lib/jna-platform-4.4.0.jar" />
   </target>
 
   <!-- =====================================================================

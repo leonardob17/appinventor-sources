@@ -132,7 +132,7 @@
   <!-- Dutch -->
   <extend-property name="locale" values="nl"/>
 
-  <set-property-fallback name="locale" value="en"/>
+  <set-property-fallback name="locale" value="pt_BR"/>
   <collapse-all-properties/>
 
 </module>
