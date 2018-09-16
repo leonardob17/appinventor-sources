@@ -50,7 +50,7 @@
           <a href="<%= new UriBuilder("/login").add("locale", "pt_BR").add("repo", repo).add("galleryId", galleryId).add("redirect", redirect).build() %>" class="btn btn-secondary">Português</a>
           <a href="<%= new UriBuilder("/login").add("locale", "en").add("repo", repo).add("galleryId", galleryId).add("redirect", redirect).build() %>" class="btn btn-secondary">English</a>
         </div>&nbsp;&nbsp;
-        <a class="btn btn-primary" href="/login/sendlink" role="button">${passwordclickhereLabel}</a>
+        <a class="btn btn-primary" href="/login/sendlink" role="button">Definir uma nova ou recupera a senha.</a>
       </div>
       <div class="form-group row fixed-bottom">
         <div class="col-4"></div>
