@@ -21,7 +21,7 @@
     <div style="margin-top: 10px;">
       <div class="jumbotron">
         <h1 class="display-4">Email Enviado!</h1>
-        <p class="lead">Aguarde o email com o link para cadastrar ou redefinir a sua senha.</p>
+        <p class="lead">Aguarde o email com o link para cadastrar ou redefinir a sua senha. Verifique também a caixa de Spam e a Lixeira!</p>
         <hr class="my-4">
         <a class="btn btn-primary btn-lg" href="/login" role="button">Ir para o Início</a>
       </div>

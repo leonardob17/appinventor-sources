@@ -31,6 +31,12 @@
     <% if (error != null) {
       out.println("<div class=\"alert alert-danger\" role=\"alert\"><b>" + error + "</div>");
     } %>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      <strong>Novo no AppInventor - UFRGS?</strong> Crie sua conta clicando no botão "Definir uma nova ou recuperar a senha".
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
     <form method=POST action="/login">
       <div class="form-group row">
         <label for="email" class="col-sm-2 col-form-label">Email</label>
@@ -50,7 +56,7 @@
           <a href="<%= new UriBuilder("/login").add("locale", "pt_BR").add("repo", repo).add("galleryId", galleryId).add("redirect", redirect).build() %>" class="btn btn-secondary">Português</a>
           <a href="<%= new UriBuilder("/login").add("locale", "en").add("repo", repo).add("galleryId", galleryId).add("redirect", redirect).build() %>" class="btn btn-secondary">English</a>
         </div>&nbsp;&nbsp;
-        <a class="btn btn-primary" href="/login/sendlink" role="button">Definir uma nova ou recupera a senha.</a>
+        <a class="btn btn-primary" href="/login/sendlink" role="button">Definir uma nova ou recuperar a senha</a>
       </div>
       <div class="form-group row fixed-bottom">
         <div class="col-4"></div>
