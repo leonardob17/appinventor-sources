@@ -21,7 +21,7 @@ public final class EmailHelper {
     private static final Logger LOG = Logger.getLogger(LoginServlet.class.getName());
 
   	private static final Flag<String> sendGridKey = Flag.createFlag("sendgrid.key", "");
-  	private static final Flag<String> noreplyEmail = Flag.createFlag("email.no-reply", "no-reply@byod.ufrgs.br");
+  	private static final Flag<String> noreplyEmail = Flag.createFlag("email.no-reply", "vpn-conexum-daniel@ufrgs.br");
 
   	private static final String apiURL = "https://api.sendgrid.com/v3/mail/send";
 
