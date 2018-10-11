@@ -1,10 +1,10 @@
 #!/bin/bash
-APP_SERVER=$1
+APP_SERVER=$APP_DEV_SERVER
 PORT=8888
 
 cd ./appinventor
 
-nohup $APP_SERVER --port=$PORT ./appengine/build/war & PID_APPINVENTOR=$!
+nohup $APP_SERVER --port=$PORT --address=0.0.0.0 ./appengine/build/war & PID_APPINVENTOR=$!
 nohup ant RunLocalBuildServer > ../../buildserver-log.out & PID_BUILDSERVER=$!
 
 cd ..
