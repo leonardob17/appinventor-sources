@@ -76,7 +76,7 @@ public class LoginServlet extends HttpServlet {
   private static final Flag<Boolean> useLocal = Flag.createFlag("auth.uselocal", true);
   private static final UserService userService = UserServiceFactory.getUserService();
   private final PolicyFactory sanitizer = new HtmlPolicyBuilder().allowElements("p").toFactory();
-  private static final boolean DEBUG = Flag.createFlag("appinventor.debugging", true).get();
+  private static final boolean DEBUG = Flag.createFlag("appinventor.debugging", false).get();
 
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
@@ -433,8 +433,8 @@ public class LoginServlet extends HttpServlet {
 
   private void sendGridMail(String email, String link) {
     String to = email;
-    String subject = "Link para Criacao/Alteracao de Senha";
-    String message = "Acesse o seguinte link para cadastrar/alterar sua senha: " + link;
+    String subject = "AppInventor UFRGS: Link para Criação/Alteração de Senha";
+    String message = "Olá!\n\nAcesse o seguinte link para cadastrar/alterar sua senha: " + link + "\n\nEquipe BYOD UFRGS";
     try {
       EmailHelper sender = new EmailHelper();
       sender.sendEmail(to, subject, message);

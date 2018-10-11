@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
@@ -56,7 +57,7 @@ public final class EmailHelper {
         HttpPost post = new HttpPost(apiURL);
         String authHeader = "Bearer " + sendGridKey.get();
         post.setHeader("Authorization", authHeader);
-        post.setHeader("Content-Type", "application/json");
+        post.setHeader("Content-Type", "application/json; charset=utf-8");
         return post;
     }
 
@@ -84,14 +85,15 @@ public final class EmailHelper {
         HttpResponse response = null;
         String line = "";
         StringBuffer result = new StringBuffer();
-        httpPost.setEntity(new StringEntity(jsonData));
+        httpPost.setEntity(new StringEntity(jsonData, Charset.forName("UTF-8")));
         HttpClient client = HttpClientBuilder.create().build();
         response = client.execute(httpPost);
+        // BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        // while ((line = reader.readLine()) != null){ result.append(line); }
+        // Debug
         // LOG.info("Request string : " + httpPost.toString() );
         // LOG.info("Post parameters : " + jsonData );
         // LOG.info("Response Code : " +response.getStatusLine().getStatusCode());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        while ((line = reader.readLine()) != null){ result.append(line); }
         // LOG.info(result.toString());
     }
 }
