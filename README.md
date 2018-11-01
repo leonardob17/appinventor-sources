@@ -11,19 +11,19 @@ Antes de qualquer coisa, você deve fazer o build
 
 Depois de feitas as alterações que deseja, basta executar, dentro da pasta **appinventor** o seguinte:
 
-	`ant clean` *(Irá remover todos os dados da build anterior, por isso recomendo que você faça backup do banco de dados antes de executar este comando)*
+`ant clean` *(Irá remover todos os dados da build anterior, por isso recomendo que você faça backup do banco de dados antes de executar este comando)*
 
-	`ant` *(Irá gerar uma nova build)*
+`ant` *(Irá gerar uma nova build)*
 
 ### Executando o Build
 
 Caso você esteja utilizando o sistema operacional Linux, existem dois scripts que ajudam na hora de iniciar e parar os serviços do MIT App Inventor. Porém para utilizá-los, você deve criar uma variável de ambiente com o nome **APP_DEV_SERVER** com a localização do **dev_appserver.sh** que está no [App Engine SDK](https://cloud.google.com/appengine/downloads). Feito isto, estando na pasta raíz do projeto basta executar:
 
-	`sh appinventor-start.sh`
+`sh appinventor-start.sh`
 
 Caso esteja tudo correto, o appinventor estará rodando na porta 8888 do localhost. Para parar os serviços do MIT App Inventor, basta executar:
 
-	`sh appinventor-stop.sh`
+`sh appinventor-stop.sh`
 
 Estes scripts não executarão apenas o appengine, mas também o buildserver, que é necessário para compilar os projetos.
 
