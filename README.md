@@ -4,6 +4,13 @@
 
 ## Como instalar no meu servidor ou máquina
 
+1. Faça a clonagem do repositório executando `git clone https://github.com/leonardob17/appinventor-sources.git`;
+2. Entre na pasta do projeto e em seguida execute `git submodule update --init`;
+3. *(Opcional)* Faça uma cópia do arquivo *sample-.gitignonre* executando `cp sample-.gitignore .gitignore`;
+4. Entre na pasta *appinventor* e faça o build;
+5. Feitos estes passos, você já pode executar o buiçd.
+
+
 ## Como executar
 
 Antes de qualquer coisa, você deve fazer o build
